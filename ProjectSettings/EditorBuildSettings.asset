@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/TelaDeTitulo.unity
+    guid: e9d8ecb68fdbc9051a6c08f294acec54
+  - enabled: 1
+    path: Assets/Scenes/eMANUEL.unity
+    guid: 3621dbcde7c36354a9c6cb985d6e34c1
+  - enabled: 1
+    path: Assets/Scenes/R.unity
+    guid: 348ad8519e2901c45a77b5b790cbe661
+  m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
