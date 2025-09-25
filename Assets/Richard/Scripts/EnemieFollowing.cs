@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.LowLevel;
 using UnityEngine.UI;
 
 public class EnemieFollowing : MonoBehaviour
@@ -10,13 +11,10 @@ public class EnemieFollowing : MonoBehaviour
     [SerializeField] public TimerScript timerScript;     // Arraste o objeto com TimerScript no Inspector
 
     private bool enemieFollow = false;
+    public bool playerLost = false;
 
     void Start()
     {
-        if (panelLose != null)
-        {
-            panelLose.SetActive(false);
-        }
 
         // Garante que o target seja atribuído mesmo se não tiver sido no Inspector
         if (target == null)
@@ -29,6 +27,12 @@ public class EnemieFollowing : MonoBehaviour
 
     void Update()
     {
+        if(target != null)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.position, speed);
+        }
+        
+        //checa se o tempo acabou
         if (timerScript != null && !timerScript.timerIsRunning)
         {
             enemieFollow = true;
@@ -40,10 +44,25 @@ public class EnemieFollowing : MonoBehaviour
         }
     }
 
+    private void PlayerLose()
+    {
+        playerLost = true;         // Marca que o jogador já perdeu (evita repetição)
+        if (panelLose != null)
+            panelLose.SetActive(true); // Mostra o painel de derrota na tela
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (playerLost && other.CompareTag("palyer"))
+        {
+            PlayerLose();
+            Destroy(target.gameObject);
+            Destroy(gameObject);
+        }
+
         if (other.gameObject.CompareTag("Player"))
         {
+            
             if (panelLose != null)
                 panelLose.SetActive(true);
             Destroy(target.gameObject);
