@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class EnemieFollowing : MonoBehaviour
 {
-    [SerializeField] public float speed = 9f;
+    [SerializeField] public float speed = 1f;
     [SerializeField] public Transform target;
 
     [SerializeField] public GameObject panelLose;        // Arraste o painel da UI no Inspector
@@ -27,22 +27,17 @@ public class EnemieFollowing : MonoBehaviour
 
     void Update()
     {
-        if(target != null)
+        if (target != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, speed);
-        }
-        
-        //checa se o tempo acabou
-        if (timerScript != null && !timerScript.timerIsRunning)
-        {
-            enemieFollow = true;
-        }
-
-        if (enemieFollow && target != null)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                target.position,
+                speed * Time.deltaTime
+            );
         }
     }
+
+
 
     private void PlayerLose()
     {

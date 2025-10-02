@@ -2,39 +2,49 @@ using UnityEngine;
 
 public class CondicaoDeVitoria : MonoBehaviour
 {
-    public Inventory inventory; // arrasta o Inventory aqui no inspector
-    public TimerScript timerScript; // arrasta o TimerScript no inspector
+    public Inventory inventory;
+    public TimerScript timerScript; // Arrastado do objeto com o TimerScript
     public GameObject porta;
-    public GameObject vitoria;
+    public GameObject vitoria; // Tela de Vitória/Win Screen
+
+    // IMPORTANTÍSSIMO: Mude este valor no Inspector para o total exato de doces no seu nível!
+    public int docesParaVitoria = 6; // Exemploo: se você tem 5 doces no cenário
 
     private void Start()
     {
         porta.SetActive(true);
         vitoria.SetActive(false);
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player")) // Corrigido
+        Debug.Log("Colidiu com: " + collision.name);
+
+        if (collision.CompareTag("Player"))
         {
-            // Verifica se o jogador coletou todos os itens poss�veis
-            if (inventory.items.Count == inventory.maxSlots)
+            Debug.Log("Player tocou na porta!");
+
+            // VERIFICAÇÃO CHAVE: O número de itens coletados é suficiente para vencer?
+            if (inventory != null && inventory.items.Count >= docesParaVitoria)
             {
-                // Verifica se ainda h� tempo no cron�metro
-                if (timerScript.timerRemaining > 0)
+                vitoria.SetActive(true); // Ativa a tela de vitória
+                porta.SetActive(false);  // Desativa a porta
+
+                // NOVO: Se o jogador vence, o timer DEVE PARAR!
+                if (timerScript != null)
                 {
-                    vitoria.SetActive (true);
-                    porta.SetActive(false);
-                    Debug.Log(" U did it!");
+                    timerScript.timerIsRunning = false;
+                    Time.timeScale = 0f; // PAUSA O JOGO NA VITÓRIA
                 }
-                else
-                {
-                    Debug.Log(" Tempo acabou!");
-                }
+
+                Debug.Log("VITÓRIA! Doces Coletados: " + inventory.items.Count);
             }
             else
             {
-                Debug.Log("Voc� ainda n�o pegou todos os itens!");
+                // Se não venceu, dê um feedback claro!
+                Debug.Log($"Ainda faltam {docesParaVitoria - inventory.items.Count} doces! Doces Atuais: {inventory.items.Count}");
             }
         }
     }
 }
+
